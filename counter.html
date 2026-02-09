@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Countdown Timer (Blue-Black)</title>
+  <style>
+    body {
+      min-height: 100vh;
+      margin: 0;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: linear-gradient(120deg, #151e2f 0%, #353c57 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding-top: 50px;
+    }
+    h2 {
+      color: #72b6f4;
+      text-shadow: 0px 2px 12px #0a0a1f66;
+      font-size: 2.2em;
+      margin-bottom: 0.9em;
+    }
+    #inputForm {
+      background: #1b253a;
+      padding: 18px 26px;
+      border-radius: 16px;
+      box-shadow: 0 6px 24px #19306385;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      align-items: center;
+    }
+    label {
+      color: #9dc1ef;
+      font-size: 1.08em;
+      font-weight: 500;
+    }
+    #secondsInput {
+      font-size: 1.17em;
+      padding: 7px 13px;
+      border-radius: 7px;
+      border: 1px solid #233a55;
+      background: #202b40;
+      color: #72b6f4;
+      margin-left: 8px;
+      width: 90px;
+      text-align: center;
+    }
+    button {
+      background: linear-gradient(90deg, #3984bc, #1e6091 90%);
+      color: #d8e8ff;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.08em;
+      font-weight: bold;
+      padding: 8px 28px;
+      box-shadow: 0 2px 12px #19306360;
+      cursor: pointer;
+      margin-top: 7px;
+      transition: background 0.23s;
+    }
+    button:hover {
+      background: linear-gradient(100deg, #1e6091, #3984bc 80%);
+    }
+    #timer {
+      font-size: 3.3em;
+      margin: 32px 0 8px 0;
+      font-weight: bold;
+      color: #72b6f4;
+      background: #22293aee;
+      display: inline-block;
+      border-radius: 12px;
+      box-shadow: 0 2px 18px #19306365;
+      min-width: 90px;
+      padding: 10px 26px;
+      letter-spacing: 0.1em;
+      transition: background 0.4s;
+    }
+    #message {
+      font-size: 1.5em;
+      color: #40e0ff;
+      font-weight: bold;
+      text-shadow: 0 0 22px #19306377, 0 2px 12px #193063;
+      margin-top: 20px;
+      display: none;
+      animation: pop 0.9s;
+    }
+    .animate {
+      animation: grow 0.8s alternate-reverse infinite;
+    }
+    @keyframes grow {
+      0% { transform: scale(1);}
+      100% { transform: scale(1.13) rotate(-1.8deg);}
+    }
+    @keyframes pop {
+      0% {transform: scale(0.5); opacity: 0;}
+      70% {transform: scale(1.13);}
+      100% {transform: scale(1); opacity: 1;}
+    }
+    @media (max-width: 600px) {
+      h2 { font-size: 1.25em;}
+      #timer { font-size: 1.5em; padding: 8px 8px;}
+    }
+  </style>
+</head>
+<body>
+  <h2>Countdown Timer</h2>
+  <form id="inputForm">
+    <label>Enter seconds:
+      <input type="number" id="secondsInput" min="1" required>
+    </label>
+    <button type="submit">Start Timer</button>
+  </form>
+  <div id="timer">0</div>
+  <div id="message">🎉 Time's up! Well done! 🎉</div>
+  <script>
+
+    var timeLeft;
+    var timerInterval;
+    var inputForm = document.getElementById('inputForm');
+    var secondsInput = document.getElementById('secondsInput');
+    var timerDisplay = document.getElementById('timer');
+    var message = document.getElementById('message');
+
+    inputForm.onsubmit = function(event) {
+      event.preventDefault();
+      timeLeft = parseInt(secondsInput.value, 10);
+
+      if (isNaN(timeLeft) || timeLeft < 1) {
+        alert("Please enter a positive number!");
+        return;
+      }
+      message.style.display = "none";
+      timerDisplay.textContent = timeLeft;
+      timerDisplay.classList.add('animate');
+      clearInterval(timerInterval);
+
+      timerInterval = setInterval(function() {
+        timeLeft = timeLeft - 1;
+        timerDisplay.textContent = timeLeft;
+
+        if (timeLeft <= 0) {
+          clearInterval(timerInterval);
+          timerDisplay.textContent = "0";
+          timerDisplay.classList.remove('animate');
+          message.style.display = "block";
+        }
+      }, 1000);
+    };
+  </script>
+</body>
+</html>
